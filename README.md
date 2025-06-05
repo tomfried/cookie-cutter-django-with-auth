@@ -1,6 +1,36 @@
 # Cookie Cutter Django Template - With Authentication
 A basic Django 5.0 starter project w/ Oauth piece derived from: https://github.com/mdrhmn/dj-social-auth
 
+## Screenshots
+**Home Page**
+![screenshot-of-home-page](https://github.com/user-attachments/assets/ad368746-7548-467c-8c8e-8fab53c30d9c)
+
+**About Page**
+![screenshot-of-about-page](https://github.com/user-attachments/assets/b9b8f82c-529b-4330-914c-09c74cc90248)
+
+**Sign Up Page**
+![screenshot-of-sign-up-page](https://github.com/user-attachments/assets/83736871-1eb5-4126-81ca-71d8f9014ead)
+
+**Sign in Page**
+![screenshot-of-sign-in-page](https://github.com/user-attachments/assets/46d39624-7ba4-42ab-8c9b-7d75410d1f01)
+
+**Alerts working**
+![screenshot-post-sign-in](https://github.com/user-attachments/assets/22fc827b-b6fd-4ceb-bfcd-0ae101a7b74b)
+
+**User Dropdown**
+
+<img width="402" alt="screenshot-of-user-dropdown" src="https://github.com/user-attachments/assets/cfcae60f-2f2e-4d38-8ae8-480660c55987" />
+
+**Accounts page**
+![screenshot-of-account-page](https://github.com/user-attachments/assets/a9b0a738-13c0-454d-bfb2-b781b8c259fb)
+
+**Example Form**
+![screenshot-of-complex-form-page](https://github.com/user-attachments/assets/309fe6cd-61b3-4dd1-827f-4b5973010484)
+
+**Mobile/Low Vision (magnified) experience**
+![screenshot-of-mobile-low-vision-view](https://github.com/user-attachments/assets/052edbb8-3d34-4087-b10a-a816beb2f083)
+
+
 ## Project Setup
 1. Go to https://www.python.org/downloads/release/python-3116/ and downloaded Python 3.11.6.
 2. Once downloaded and installed, navigate to your projects directory then create a virtual environment. EX:
