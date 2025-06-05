@@ -1,0 +1,104 @@
+{% load allauth %}
+{% if attrs.type == "checkbox" or attrs.type == "radio" %}
+    <div class="form-block">
+        <input {% if attrs.required %}required{% endif %}
+               name="{{ attrs.name }}"
+               class="form-check-input"
+               id="{{ attrs.id }}"
+               {% if attrs.value is not None %}value="{{ attrs.value }}"{% endif %}
+               {% if attrs.disabled %}disabled{% endif %}
+               type="{{ attrs.type }}">
+        <label class="form-check-label" for="{{ attrs.id }}">
+            {% slot label %}
+            {% endslot %}
+        </label>
+        {% if slots.help_text %}
+            <div class="form-text">
+                {% slot help_text %}
+                {% endslot %}
+            </div>
+        {% endif %}
+    </div>
+{% elif attrs.type == "textarea" %}
+    <div class="form-block">
+        <label>
+            <span>{% slot label %}{% endslot %}</span>
+            <textarea {% if attrs.required %}required{% endif %}
+                  {% if attrs.rows %}rows="{{ attrs.rows }}"{% endif %}
+                  class="form-control"
+                  name="{{ attrs.name }}"
+                  {% if attrs.readonly %}readonly{% endif %}
+                  id="{{ attrs.id }}"
+                  {% if attrs.disabled %}disabled{% endif %}>{% slot value %}{% endslot %}</textarea>
+        </label>
+    </div>
+{% elif attrs.type == "hidden" %}
+    <div class="form-block">
+      <input {% if attrs.required %}required{% endif %}
+             name="{{ attrs.name }}"
+             id="{{ attrs.id }}"
+             {% if attrs.value is not None %}value="{{ attrs.value }}"{% endif %}
+             type="hidden">
+    </div>
+{% elif attrs.type == "select" %}
+    <div class="form-block">
+        {% if not attrs.unlabeled %}
+            <label for="{{ attrs.id }}">{% slot label %}
+                {% endslot %}
+            </label>
+        {% endif %}
+        <select id="{{ attrs.id }}" name="{{ attrs.name }}" class="form-select">
+            {% for option in attrs.choices %}
+                <option {% if option.0 == attrs.value %}selected{% endif %}
+                        value="{{ option.0 }}">{{ option.1 }}</option>
+            {% endfor %}
+        </select>
+        {% if attrs.unlabeled %}
+            <label for="{{ attrs.id }}">
+                {% slot label %}
+                {% endslot %}
+            </label>
+        {% endif %}
+    </div>
+{% else %}
+    <div class="form-block">
+        {% comment %}
+          {% if not attrs.unlabeled %}
+              <label for="{{ attrs.id }}">
+                  {% slot label %}
+                  {% endslot %}
+              </label>
+          {% endif %}
+        {% endcomment %}
+        <label for="{{ attrs.id }}">
+            <span>{% slot label %}{% endslot %}</span>
+            <input {% if attrs.required %}required{% endif %}
+                   name="{{ attrs.name }}"
+                   {% if attrs.placeholder %}placeholder="{{ attrs.placeholder }}" {% elif attrs.unlabeled %}placeholder="{% slot label %}{% endslot %}"{% endif %}
+                   class="{% if attrs.errors %}is-invalid{% endif %} form-control rounded-3"
+                   id="{{ attrs.id }}"
+                   {% if attrs.readonly %}readonly{% endif %}
+                   {% if attrs.disabled %}disabled{% endif %}
+                   {% if attrs.tabindex %}tabindex="{{ attrs.tabindex }}"{% endif %}
+                   {% if attrs.style %}style="{{ attrs.style }}"{% endif %}
+                   {% if attrs.autocomplete %}autocomplete="{{ attrs.autocomplete }}"{% endif %}
+                   {% if attrs.value is not None %}value="{{ attrs.value }}"{% endif %}
+                   type="{{ attrs.type }}">
+        </label>
+    </div>
+    {% comment %}
+      {% if attrs.unlabeled %}
+          <label for="{{ attrs.id }}">
+              {% slot label %}
+              {% endslot %}
+          </label>
+      {% endif %}
+      {% if slots.help_text %}
+          <div class="form-text">
+              {% slot help_text %}
+              {% endslot %}
+          </div>
+      {% endif %}
+    {% endcomment %}
+    {% include "../../layout/alerts-container-forms.html" %}
+{% endif %}

@@ -1,0 +1,94 @@
+{% extends "allauth/layouts/manage.html" %}
+{% load allauth i18n account%}
+
+{% block content %}
+    <h1>My Account</h1>
+
+    {% url 'account_email' as email_url_ %}
+    {% url 'account_change_phone' as phone_url_ %}
+    {% url 'account_change_password' as change_password_url_ %}
+
+    {% if email_url_ or phone_url_ or change_password_url_ %}
+        <p class="account-field">Username</p>
+        <p>{{ user.username }}</p>
+
+        {% if email_url_ %}
+            <p class="account-field">Email</p>
+            <p>{{ user.email }} <a class="float-right" href="{% url 'account_email' %}">Change Email</a></p>
+        {% endif %}
+
+        {% if phone_url_ %}
+            <p class="account-field">Phone</p>
+            <p>{{ user.email }} <a class="float-right" href="{% url 'account_change_phone' %}">Change Phone</a></p>
+        {% endif %}
+
+        {% if change_password_url_ %}
+            <p class="account-field">Password</p>
+            <p>**************** <a class="float-right" href="{% url 'account_change_password' %}">Change Password</a></p>
+        {% endif %}
+    {% endif %}
+
+    {% comment %}
+      {% url 'socialaccount_connections' as connections_url_ %}
+      {% if connections_url_ %}
+          <li><a href="{{ connections_url_ }}">Third-Party Accounts</a></li>
+      {% endif %}
+    {% endcomment %}
+
+    {% url 'mfa_index' as mfa_index_url_ %}
+    {% if mfa_index_url_ %}
+        <li><a href="{{ mfa_index_url_ }}">Two-Factor Authentication</a></li>
+    {% endif %}
+
+    {% url 'usersessions_list' as usersessions_list_url_ %}
+    {% if usersessions_list_url_ %}
+        <li><a href="{{ usersessions_list_url_ }}">Sessions</a></li>
+    {% endif %}
+
+
+    <hr/>
+    <h2>3rd Party Connections</h2>
+    {% if form.accounts %}
+        {% element p %}
+            {% blocktrans %}You can sign in to your account using any of the following third-party accounts:{% endblocktrans %}
+        {% endelement %}
+        {% url 'socialaccount_connections' as action_url %}
+        {% element form form=form method="post" action=action_url %}
+            {% slot body %}
+                {% csrf_token %}
+                {% for acc in form.fields.account.choices %}
+                    {% with account=acc.0.instance.get_provider_account %}
+                        {% setvar radio_id %}
+                            id_account_{{ account.account.pk }}
+                        {% endsetvar %}
+                        {% setvar tags %}
+                            socialaccount,{{ account.account.provider }}
+                        {% endsetvar %}
+                        {% element field id=radio_id type="radio" name="account" value=account.account.pk %}
+                            {% slot label %}
+                                {{ account }}
+                                {% element badge tags=tags %}
+                                    {{ account.get_brand.name }}
+                                {% endelement %}
+                            {% endslot %}
+                        {% endelement %}
+                    {% endwith %}
+                {% endfor %}
+            {% endslot %}
+            {% slot actions %}
+                {% element button tags="delete,danger" type="submit" %}
+                    {% trans 'Remove' %}
+                {% endelement %}
+            {% endslot %}
+        {% endelement %}
+    {% else %}
+        {% element p %}
+            {% trans 'You currently have no third-party accounts connected to this account.' %}
+        {% endelement %}
+    {% endif %}
+    {% element h2 %}
+        {% trans 'Add a Third-Party Account' %}
+    {% endelement %}
+    {% include "socialaccount/snippets/provider_list.html" with process="connect" %}
+    {% include "socialaccount/snippets/login_extra.html" %}
+{% endblock content %}

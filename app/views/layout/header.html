@@ -1,0 +1,47 @@
+{% load static i18n account %}
+<div class="content-container">
+    <div class="navbar-header"><a href="{% url 'home' %}"><img class="logo" src="{% static 'images/logo-light.png' %}" alt="logo"></a></div>
+    <nav>
+        <ul class="header-links">
+            {% if user.is_authenticated %}
+                <li ><a href="{% url 'about' %}">About</a></li>
+                <li class="collapse-on-mobile"><a href="{% url 'complex_form' %}">Complex Form</a></li>
+                <li id="mobileDropdownLink" class="header-dropdown-link">
+                    <a href="#" aria-label="Mobile Header Dropdown">
+                        <div class="nav-bar-icon-container" aria-hidden="true">
+                            <div class="nav-bar-icon"></div>
+                        </div>
+                    </a>
+                    <ol class="mobile-nav-dropdown header-dropdown">
+                        <li><a href="{% url 'complex_form' %}">Complex Form</a></li>
+                        <li><a href="{% url 'about' %}">About</a></li>
+                    </ol>
+                </li>
+                <li class="header-dropdown-link">
+                    <a href="#" id="userDropdownLink" aria-label="User Dropdown" aria-expanded="false">
+                      <i class="fas fa-user" aria-hidden="true"></i>
+                      <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                    </a>
+                    <ul class="header-dropdown">
+                        <li id="headerDropdownUserBlock">
+                          <i class="fas fa-user" aria-hidden="true"></i>
+                          <span class="sr-only">Signed in as </span>
+                          <strong>{{ user.username }}</strong>
+                        </li>
+                        {% url 'account_email' as email_url_ %}
+                        {% url 'socialaccount_connections' as socialaccount_url_ %}
+                        {% if email_url_ or socialaccount_url_ %}
+                            <li><a href="{% url 'account_profile' %}">My Account</a></li>
+                        {% endif %}
+                        <li><a href="{% url 'account_logout' %}">{% translate "Sign Out" %}</a></li>
+                    </ul>
+                </li>
+            {% else %}
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li class="action-button">
+                    <a href="{% url 'account_login' %}">{% translate "Sign In" %}</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
